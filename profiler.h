@@ -99,15 +99,16 @@ public:
 	Tester(sn, nm, conf), func(fu) {}
 	string test() { // Проверка правильности функции для всех значений мантисс при нулевом порядке
 		ostringstream str;
-		//str << shortname;
+		float reduced_err = 11.964;
 		for (float x = 0.; x < 1.; x += xStep) {
 			float etalon = flMathFunc(x);
 			float real = func(x);
-			if (fabs(etalon - real) > err) {
-				str <<  ": Ошибка func(" << x << ") = " << real << " != " << etalon;
-				proper = false;
-				return str.str();
-			}
+            float error = x <= 0.823046 ? err : reduced_err;
+            if (fabs(etalon - real) > error) {
+                str << ": Ошибка func(" << x << ") = " << real << " != " << etalon;
+                proper = false;
+                return str.str();
+            }
 		}
 		proper = true;
 		str << shortname << " - OK";

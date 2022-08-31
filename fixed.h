@@ -12,7 +12,10 @@ using namespace std;
 
 // #define DEBUG // раскомментировать, если нужно бороться с ошибкми бесцикловой реализация схемы Горнера
 
-FixPoint fixCoef[LEN_POLINOM] = { DIV1_FACT1FP, -DIV1_FACT3FP, DIV1_FACT5FP, -DIV1_FACT7FP, DIV1_FACT9FP };
+FixPoint fixCoef[LEN_POLINOM] = { DIV1_F0FP, DIV1_F1FP, DIV1_F2FP, DIV1_F3FP, DIV1_F4FP, DIV1_F5FP, DIV1_F6FP,
+							 DIV1_F7FP, DIV1_F8FP, DIV1_F9FP, DIV1_F10FP, DIV1_F11FP, DIV1_F12FP, DIV1_F13FP, DIV1_F14FP, DIV1_F15FP,
+							 DIV1_F16FP, DIV1_F17FP, DIV1_F18FP, DIV1_F19FP, DIV1_F20FP, DIV1_F21FP, DIV1_F22FP, DIV1_F23FP, DIV1_F24FP,
+							 DIV1_F25FP, DIV1_F26FP, DIV1_F27FP, DIV1_F28FP, DIV1_F29FP, };
 
 /*void printHex(FixPoint x) {
 	cout << hex << uppercase << setfill('0') << setw(8) << x;
@@ -97,7 +100,7 @@ bool testFixOperations(Config config) {
 // Директивы условной трасляции DEBUG вставлены для облегчения отладки бесцикловой реализации
 // Когда цикловая реализация отлажена
 FixPoint fxCycleGorn(FixPoint x) {
-	FixPoint x2 = FIXMUL(x,x), sum = 0;
+	FixPoint x2 = FIXMUL(x,x), sum = fixCoef[LEN_POLINOM - 1];
 #ifdef DEBUG
 	// В if должно быть значение, на котором спотыкается проверка бесцикловой реализации
 	// Если это случиться, то придется отрессировать бесцикловую реализацию, 
@@ -111,7 +114,7 @@ FixPoint fxCycleGorn(FixPoint x) {
 		cout << "): ";
 	}
 #endif
-	for (int n = LEN_POLINOM; n > 0; n--) {
+	for (int n = LEN_POLINOM-1; n > 0; n--) {
 		sum = FIXMUL(sum, x2) + fixCoef[n - 1];
 #ifdef DEBUG
 		if (x == val) {
@@ -123,7 +126,8 @@ FixPoint fxCycleGorn(FixPoint x) {
 #ifdef DEBUG
 	if (x == val) cout << endl;
 #endif
-	return sum;
+	sum = FIXMUL(sum, x);
+	return FIXMUL(sum, TWOFP);
 }
 
 // Бесцикловая схема Горнера (массив коэффициентов)

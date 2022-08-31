@@ -20,9 +20,10 @@
 using namespace std;
 
 // Устанавливая в 0 следующие константы, можно отключать времязатратные фазы, не участвующие в отладке
-#define GOFLOAT 1 // включение-выключение процессов испытания функций с плавающей точкой
+#define GOFLOAT 0 // включение-выключение процессов испытания функций с плавающей точкой
 #define GOFIX 1   // включение-выключение процессов испытания функций с фиксированной точкой
-#define GOTABLE 1 // включение-выключение процессов испытания таблично-алгоритмических функций
+#define GOTABLE 0 // включение-выключение процессов испытания таблично-алгоритмических функций
+#define GOREPORT 0 // включение-выключение процессов испытания таблично-алгоритмических функций
 
 Report report;
 Config config( 
@@ -41,7 +42,7 @@ int main(int argc, char * argv[])
 {
 	init(argc, argv, config);
 	// Создание массива объектов тестирования
-	vector <Tester * > arr = {
+	vector <Tester* > arr = {
 #if GOFLOAT != 0
 	new TestFloat("flMathFunc","Float - библиотечная реализация sin(x)/x", flMathFunc, config),
 	new TestFloat("flCyNoGorn","Float - цикл формулы ряда", flCyNoGorn, config),
@@ -76,6 +77,7 @@ int main(int argc, char * argv[])
 #endif
 	for (Tester * test : arr) test->verify();
 	cout << endl << "Замеры времени ..." << endl;
+#if GOREPORT != 0
 	for(int n = 0; n < config.pass; n++) {
 		cout << endl << "Проход " << (n + 1) << endl;
 		if (config.lenPrintLog > 0)
@@ -86,6 +88,7 @@ int main(int argc, char * argv[])
 		report.print();
 		report.log.clear();
 	}
+#endif
 	return 0;
 
 }
