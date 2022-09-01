@@ -96,7 +96,7 @@ typedef float(*FloatFunc)(float); // Указатель на функцию вещественных переменн
 typedef long FixPoint;
 
 // В дробной части фиксированного числа 30 бит
-#define FRACT_PART 30 
+#define FRACT_PART 24
 // 2^31 - множитель для получения 31 бита мантиссы в long, имитирующем число с фиксированной точкой  
 #define FACTOR (1 << FRACT_PART) 
 #define FLOAT2FIX(x) (FixPoint)(x * FACTOR) // преобразование float в Fixed
@@ -104,6 +104,7 @@ typedef long FixPoint;
 #define FIXMUL(x,y) ((FixPoint)((__int64)x * (__int64)y >> FRACT_PART))     // умножение фиксированных в С++ требует двойной точности
 // Значение обратных величин факториалов (FixPointt)
 #define DIV1_FACT1FP (FixPoint)FLOAT2FIX(1.0) // 1 в формате FixPoint
+#define M1FP (FixPoint)FLOAT2FIX(-1.0) // 1 в формате FixPoint
 #define TWOFP (FixPoint)FLOAT2FIX(2.0) // 2 в формате FixPoint
 #define DIV1_FACT3FP (FixPoint)FLOAT2FIX(DIV1_FACT3)
 #define DIV1_FACT5FP (FixPoint)FLOAT2FIX(DIV1_FACT5)
