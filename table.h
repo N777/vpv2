@@ -5,9 +5,9 @@
 #pragma once
 #include "float.h"
 
-#define LEN_ADDR0 20 // размер адреса таблицы для полинома нулевой степени
-#define LEN_ADDR1 10  // размер адреса таблицы для полинома первой степени
-#define LEN_ADDR2 8  // размер адреса таблицы для полинома второй степени
+#define LEN_ADDR0 22 // размер адреса таблицы для полинома нулевой степени
+#define LEN_ADDR1 12  // размер адреса таблицы для полинома первой степени
+#define LEN_ADDR2 12  // размер адреса таблицы для полинома второй степени
 #define DX_DERIV  (1.0E-1-20) // dX численного дифференциирования (производные функции в точке)
 
 typedef float ETable0;  // Тип элемента таблицы для полинома 1-й степени
@@ -20,16 +20,16 @@ ETable2 * table2;
 
 // Для генерации таблиц с целью повышения точности используем double dmathFunc
 double dmathFunc(double x) {
-	return sin(x) / x;
+	return (float)log((1 + x) / (1 - x));
 }
 
 // Первая производная в точке x численным методом на основе центральных разностей
 double firstDerivative(double x) {
-	return cos(x) / x - dmathFunc(x) / x ;
+    return -2 / (x * x - 1);
 }
 // Вторая производная в точке x численным методом
 double secondDerivative(double x) {
-	return -dmathFunc(x) - 2 * cos(x) / (x * x) + 2 * sin(x) / (x * x * x);
+    return 4 * x / (x * x - 1) * (x * x - 1);
 }
 
 // Полином нулевой степени реализуется - прямой табличный метод

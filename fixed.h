@@ -229,6 +229,7 @@ FixPoint fxNoCyGornConst(FixPoint x) { // Бесцикловая схема Горнера с константам
 	return sum;
 }
 FixPoint fxNoCyGornAsm(FixPoint x) { // Бесцикловая схема Горнера asm
+    FixPoint test1, test2;
 	FixPoint sum;
 	if (x == 0x00B50E40)
 		sum = 5;
@@ -238,35 +239,175 @@ FixPoint fxNoCyGornAsm(FixPoint x) { // Бесцикловая схема Горнера asm
 		MOV		EAX, x
 		MOV		ECX, EAX
 		IMUL	ECX
+        mov     test2, eax
 		MOV		EAX, EDX
-		SAL		EAX, 2
+        mov     test1, eax
+		;SAL		EAX, 2
+        mov     test1, eax
 		; ecx = x2 = x * 2
 		MOV		ECX, EAX
-		; EAX = a[4] * x2
-		MOV		EAX, 0B8EH; DIV1_FACT9FP
-		IMUL	ECX
-		MOV		EAX, EDX
-		SAL		EAX, 2
 		; EAX = a[4] * x2 + a[3]
-		ADD		EAX, 0FFFCBFCCH; -DIV1_FACT7FP
+		MOV		EAX, 000456C7h; DIV1_FACT9FP
 		IMUL	ECX
 		MOV		EAX, EDX
-		SAL		EAX, 2
-		; EAX = (a[3] * x ^ 2 + a[2])
-		ADD		EAX, 00888889H; DIV1_FACT5FP
-		; EAX = (a[3] * x2 + a[2])*x2
-		IMUL	ECX
-		MOV		EAX, EDX
-		SAL		EAX, 2
-		; EAX = (a[3] * x2 + a[2])*x2 + a[1]
-		SUB		EAX, 0AAAAAB0H; DIV1_FACT3FP
-		; EAX = ((a[3] * x2 + a[2])*x2 + a[1])*x2
-		IMUL	ECX
-		MOV		EAX, EDX
-		SAL		EAX, 2
-		; EAX = ((a[3] * x2 + a[2])*x2 + a[1])*x2 + a[0
-		ADD		EAX, 40000000H; DIV1_FACT1FP
-		MOV		sum,	EAX
+        MOV		sum,	EAX
+		;SAL		EAX, 2
+        ADD		EAX, 00047DC1h; -DIV1_FACT7FP
+
+		; EAX = a[4] * x2
+        mov test2, ECX
+        IMUL	ECX
+        MOV		EAX, EDX
+        ;SAL		EAX, 2
+        ADD		EAX, 0004A790H
+
+        IMUL	ECX
+        MOV		EAX, EDX
+        ;SAL		EAX, 2
+        ADD		EAX, 0004D487H
+
+        IMUL	ECX
+        MOV		EAX, EDX
+        ;SAL		EAX, 2
+        ADD		EAX, 00050505H
+
+        IMUL	ECX
+        MOV		EAX, EDX
+        ;SAL		EAX, 2
+        ADD		EAX, 00053978H
+
+        IMUL	ECX
+        MOV		EAX, EDX
+        ;SAL		EAX, 2
+        ADD		EAX, 00057262H
+
+        IMUL	ECX
+        MOV		EAX, EDX
+        ;SAL		EAX, 2
+        ADD		EAX, 0005B05BH
+
+        IMUL	ECX
+        MOV		EAX, EDX
+        ;SAL		EAX, 2
+        ADD		EAX, 0005F417H
+
+        IMUL	ECX
+        MOV		EAX, EDX
+        ;SAL		EAX, 2
+        ADD		EAX, 00063E70H
+
+        IMUL	ECX
+        MOV		EAX, EDX
+        ;SAL		EAX, 2
+        ADD		EAX, 00069069H
+
+        IMUL	ECX
+        MOV		EAX, EDX
+        ;SAL		EAX, 2
+        ADD		EAX, 0006EB3EH
+
+        IMUL	ECX
+        MOV		EAX, EDX
+        ;SAL		EAX, 2
+        ADD		EAX, 00075075H
+
+        IMUL	ECX
+        MOV		EAX, EDX
+        ;SAL		EAX, 2
+        ADD		EAX, 0007C1F0H
+
+        IMUL	ECX
+        MOV		EAX, EDX
+        ;SAL		EAX, 2
+        ADD		EAX, 00084210H
+
+        IMUL	ECX
+        MOV		EAX, EDX
+        ;SAL		EAX, 2
+        ADD		EAX, 0008D3DCH
+
+        IMUL	ECX
+        MOV		EAX, EDX
+        ;SAL		EAX, 2
+        ADD		EAX, 00097B42H
+
+        IMUL	ECX
+        MOV		EAX, EDX
+        ;SAL		EAX, 2
+        ADD		EAX, 000A3D70H
+
+        IMUL	ECX
+        MOV		EAX, EDX
+        ;SAL		EAX, 2
+        ADD		EAX, 000B2164H
+
+        IMUL	ECX
+        MOV		EAX, EDX
+        ;SAL		EAX, 2
+        ADD		EAX, 000C30C3H
+
+        IMUL	ECX
+        MOV		EAX, EDX
+        ;SAL		EAX, 2
+        ADD		EAX, 000D7943H
+
+        IMUL	ECX
+        MOV		EAX, EDX
+        ;SAL		EAX, 2
+        ADD		EAX, 000F0F0FH
+
+        IMUL	ECX
+        MOV		EAX, EDX
+        ;SAL		EAX, 2
+        ADD		EAX, 00111111H
+
+        IMUL	ECX
+        MOV		EAX, EDX
+        ;SAL		EAX, 2
+        ADD		EAX, 0013B13BH
+
+        IMUL	ECX
+        MOV		EAX, EDX
+        ;SAL		EAX, 2
+        ADD		EAX, 001745D1H
+
+        IMUL	ECX
+        MOV		EAX, EDX
+        ;SAL		EAX, 2
+        ADD		EAX, 001C71C7H
+
+        IMUL	ECX
+        MOV		EAX, EDX
+        ;SAL		EAX, 2
+        ADD		EAX, 00249249H
+
+        IMUL	ECX
+        MOV		EAX, EDX
+        ;SAL		EAX, 2
+        ADD		EAX, 00333333H
+
+        IMUL	ECX
+        MOV		EAX, EDX
+        ;SAL		EAX, 2
+        ADD		EAX, 00555555H
+
+        IMUL	ECX
+        MOV		EAX, EDX
+        ;SAL		EAX, 2
+        ADD		EAX, 01000000H
+
+
+        MOV     ECX, x
+        IMUL	ECX
+        MOV		EAX, EDX
+        ;SAL		EAX, 2
+
+        MOV     ECX, 2
+        IMUL	ECX
+        MOV		EAX, EDX
+        ;SAL		EAX, 2
+        
+        MOV		sum,	EAX
 	}
 	return sum;
 }

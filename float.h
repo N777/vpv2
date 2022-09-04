@@ -22,7 +22,7 @@ int factorial(int n) {
 
 // Библиотечная реализация функции на основе библиотеки math.h для измерения
 float flMathFunc(float x) {
-	return (float)log((1 + x) / (1 - x));;
+	return (float)log((1 + x) / (1 - x));
 }
 
 // Цикл формулы ряда 1 - x^2/3! + x^4/5! - x^6/7! + x^8/9! через цикл sum += x^2n/(2n+1)!
