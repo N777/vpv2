@@ -100,11 +100,18 @@ public:
 	string test() { // Проверка правильности функции для всех значений мантисс при нулевом порядке
 		ostringstream str;
 		float reduced_err = 11.964;
-		for (float x = 0.; x < 1.; x += xStep) {
+		for (float x = 0.; x <= 0.973695; x += xStep) {
 			float etalon = flMathFunc(x);
 			float real = func(x);
-            float error = x <= 0.823046 ? err : reduced_err;
-            if (fabs(etalon - real) > error) {
+            if (x >= 0.823046){
+                float delta = fabs(etalon - real);
+                if (delta/etalon > 0.02){
+                    str << ": Ошибка func(" << x << ") = " << real << " != " << etalon;
+                    proper = false;
+                    return str.str();
+                }
+            }
+            else if (fabs(etalon - real) > err) {
                 str << ": Ошибка func(" << x << ") = " << real << " != " << etalon;
                 proper = false;
                 return str.str();
@@ -135,16 +142,22 @@ public:
 	string test() { // Проверка правильности функции для всех положительных значений Fixed 
 		ostringstream str;
 		str << shortname;
-        float reduced_err = 11.964;
 		FixPoint step = FLOAT2FIX(xStep);
-		for (FixPoint x = 0; x < DIV1_FACT1FP; x += step) {
+		for (FixPoint x = 0; x < MAXXFP; x += step) {
 			float etalon = (float)flMathFunc(FIX2FLOAT(x)); // эталон float
 			FixPoint fixEtalon = FLOAT2FIX(etalon);
 			FixPoint r = func(x);	// реальный fixed
 			float real = FIX2FLOAT(r); // превращаем реальный в float, чтобы сранить
 			float realx = FIX2FLOAT(x);
-            float error = realx <= 0.823046 ? err : reduced_err;
-			if ((fabs(etalon - real) > error) || (real < 0)) {
+            if (realx >= 0.823046){
+                float delta = fabs(etalon - real);
+                if (delta/etalon > 0.02){
+                    str << ": Ошибка func(" << x << ") = " << real << " != " << etalon;
+                    proper = false;
+                    return str.str();
+                }
+            }
+			else if ((fabs(etalon - real) > err) || (real < 0)) {
 				str	<< ": Ошибка func(" << hex << uppercase << setfill('0') << setw(8) << x << "): "
 					<< hex << uppercase << setfill('0') << setw(8) << r << " != " 
 					<< hex << uppercase << setfill('0') << setw(8) << fixEtalon

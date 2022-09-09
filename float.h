@@ -11,15 +11,6 @@ float flCoef[LEN_POLINOM] = {DIV1_F0, DIV1_F1, DIV1_F2, DIV1_F3, DIV1_F4, DIV1_F
                              DIV1_F16, DIV1_F17, DIV1_F18, DIV1_F19, DIV1_F20, DIV1_F21, DIV1_F22, DIV1_F23, DIV1_F24,
                              DIV1_F25, DIV1_F26, DIV1_F27, DIV1_F28, DIV1_F29,};
 
-// Факториал для int - не может иметь n > 12
-int factorial(int n) {
-	int fact = n;
-	while (--n > 0) {
-		fact *= n;
-	}
-	return fact;
-}
-
 // Библиотечная реализация функции на основе библиотеки math.h для измерения
 float flMathFunc(float x) {
 	return (float)log((1 + x) / (1 - x));

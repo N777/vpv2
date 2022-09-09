@@ -37,20 +37,23 @@ string fixPointToStr(FixPoint fx, int lenFP) {
 bool testFixOperations(Config config) {
 	char strbuf[34]; // буфер двоичного числа
 	// Контрольные числа: 1, 2^(-1), 2^(-2), 2^(-3), 2^(-30), -2^(-1), -2^(-2), -2^(-3), -2^(-30)
-	float flo[] = {2., 1., 0.5, 0.25, 0.125, 0, -0.5, -0.25, -0.125, 0 };
+	float flo[] = {2., 1., 0.5, 0.25, 0.125, (float)1.0/(1 << 24), -0.5, -0.25, -0.125, -(float)1.0/(1 << 24) };
 	// Те же самые числа, что в массиве flo, представляются в массиве fix в формате FixPoint
+    for (FixPoint i: flo){
+        printHex(FLOAT2FIX(i));
+    }
 	FixPoint fix[] = {
-		0x02000000, // 01.000000..0 : 2
-		0x01000000, // 00.100000..0 : 1
-		0x00800000, // 00.010000..0 : 0.5
-		0x00400000, // 00.001000..0 : 0.25
-		0x00200000, // 00.001000..0 : 0.125
-		0x00000000, // 00.0000..001 : 0
+		0x10000000, // 01.000000..0 : 2
+		0x08000000, // 00.100000..0 : 1
+		0x04000000, // 00.010000..0 : 0.5
+		0x02000000, // 00.001000..0 : 0.25
+		0x01000000, // 00.001000..0 : 0.125
+		0x00000008, // 00.0000..001 : 2^(-24)
 		// для отрицательных код дополнительный
-		-0x00800000, // 11.100000..0 : -0.5
-		-0x00400000, // 11.110000..0 : -0.25
-		-0x00200000, // 11.111000..0 : -0.125
-		-0x00000000, // 11.1111..111 : 0
+		-0x04000000, // 11.100000..0 : -0.5
+		-0x02000000, // 11.110000..0 : -0.25
+		-0x01000000, // 11.111000..0 : -0.125
+		-0x00000008, // 11.1111..111 : 0
 	};
 	int sz = sizeof(fix) / sizeof(FixPoint);
 	// Контроль FLOAT2FIX путем сопоставления fix[i] и FLOAT2FIX(flo[i]) 
@@ -242,7 +245,7 @@ FixPoint fxNoCyGornAsm(FixPoint x) { // Бесцикловая схема Горнера asm
         mov     test2, eax
 		MOV		EAX, EDX
         mov     test1, eax
-		;SAL		EAX, 2
+		SAL		EAX, 5
         mov     test1, eax
 		; ecx = x2 = x * 2
 		MOV		ECX, EAX
@@ -251,161 +254,157 @@ FixPoint fxNoCyGornAsm(FixPoint x) { // Бесцикловая схема Горнера asm
 		IMUL	ECX
 		MOV		EAX, EDX
         MOV		sum,	EAX
-		;SAL		EAX, 2
+		SAL		EAX, 5
         ADD		EAX, 00047DC1h; -DIV1_FACT7FP
 
 		; EAX = a[4] * x2
         mov test2, ECX
         IMUL	ECX
         MOV		EAX, EDX
-        ;SAL		EAX, 2
+        SAL		EAX, 5
         ADD		EAX, 0004A790H
 
         IMUL	ECX
         MOV		EAX, EDX
-        ;SAL		EAX, 2
+        SAL		EAX, 5
         ADD		EAX, 0004D487H
 
         IMUL	ECX
         MOV		EAX, EDX
-        ;SAL		EAX, 2
+        SAL		EAX, 5
         ADD		EAX, 00050505H
 
         IMUL	ECX
         MOV		EAX, EDX
-        ;SAL		EAX, 2
+        SAL		EAX, 5
         ADD		EAX, 00053978H
 
         IMUL	ECX
         MOV		EAX, EDX
-        ;SAL		EAX, 2
+        SAL		EAX, 5
         ADD		EAX, 00057262H
 
         IMUL	ECX
         MOV		EAX, EDX
-        ;SAL		EAX, 2
+        SAL		EAX, 5
         ADD		EAX, 0005B05BH
 
         IMUL	ECX
         MOV		EAX, EDX
-        ;SAL		EAX, 2
+        SAL		EAX, 5
         ADD		EAX, 0005F417H
 
         IMUL	ECX
         MOV		EAX, EDX
-        ;SAL		EAX, 2
+        SAL		EAX, 5
         ADD		EAX, 00063E70H
 
         IMUL	ECX
         MOV		EAX, EDX
-        ;SAL		EAX, 2
+        SAL		EAX, 5
         ADD		EAX, 00069069H
 
         IMUL	ECX
         MOV		EAX, EDX
-        ;SAL		EAX, 2
+        SAL		EAX, 5
         ADD		EAX, 0006EB3EH
 
         IMUL	ECX
         MOV		EAX, EDX
-        ;SAL		EAX, 2
+        SAL		EAX, 5
         ADD		EAX, 00075075H
 
         IMUL	ECX
         MOV		EAX, EDX
-        ;SAL		EAX, 2
+        SAL		EAX, 5
         ADD		EAX, 0007C1F0H
 
         IMUL	ECX
         MOV		EAX, EDX
-        ;SAL		EAX, 2
+        SAL		EAX, 5
         ADD		EAX, 00084210H
 
         IMUL	ECX
         MOV		EAX, EDX
-        ;SAL		EAX, 2
+        SAL		EAX, 5
         ADD		EAX, 0008D3DCH
 
         IMUL	ECX
         MOV		EAX, EDX
-        ;SAL		EAX, 2
+        SAL		EAX, 5
         ADD		EAX, 00097B42H
 
         IMUL	ECX
         MOV		EAX, EDX
-        ;SAL		EAX, 2
+        SAL		EAX, 5
         ADD		EAX, 000A3D70H
 
         IMUL	ECX
         MOV		EAX, EDX
-        ;SAL		EAX, 2
+        SAL		EAX, 5
         ADD		EAX, 000B2164H
 
         IMUL	ECX
         MOV		EAX, EDX
-        ;SAL		EAX, 2
+        SAL		EAX, 5
         ADD		EAX, 000C30C3H
 
         IMUL	ECX
         MOV		EAX, EDX
-        ;SAL		EAX, 2
+        SAL		EAX, 5
         ADD		EAX, 000D7943H
 
         IMUL	ECX
         MOV		EAX, EDX
-        ;SAL		EAX, 2
+        SAL		EAX, 5
         ADD		EAX, 000F0F0FH
 
         IMUL	ECX
         MOV		EAX, EDX
-        ;SAL		EAX, 2
+        SAL		EAX, 5
         ADD		EAX, 00111111H
 
         IMUL	ECX
         MOV		EAX, EDX
-        ;SAL		EAX, 2
+        SAL		EAX, 5
         ADD		EAX, 0013B13BH
 
         IMUL	ECX
         MOV		EAX, EDX
-        ;SAL		EAX, 2
+        SAL		EAX, 5
         ADD		EAX, 001745D1H
 
         IMUL	ECX
         MOV		EAX, EDX
-        ;SAL		EAX, 2
+        SAL		EAX, 5
         ADD		EAX, 001C71C7H
 
         IMUL	ECX
         MOV		EAX, EDX
-        ;SAL		EAX, 2
+        SAL		EAX, 5
         ADD		EAX, 00249249H
 
         IMUL	ECX
         MOV		EAX, EDX
-        ;SAL		EAX, 2
+        SAL		EAX, 5
         ADD		EAX, 00333333H
 
         IMUL	ECX
         MOV		EAX, EDX
-        ;SAL		EAX, 2
+        SAL		EAX, 5
         ADD		EAX, 00555555H
 
         IMUL	ECX
         MOV		EAX, EDX
-        ;SAL		EAX, 2
+        SAL		EAX, 5
         ADD		EAX, 01000000H
 
 
         MOV     ECX, x
         IMUL	ECX
         MOV		EAX, EDX
-        ;SAL		EAX, 2
+        SAL		EAX, 5
 
-        MOV     ECX, 2
-        IMUL	ECX
-        MOV		EAX, EDX
-        ;SAL		EAX, 2
         
         MOV		sum,	EAX
 	}
