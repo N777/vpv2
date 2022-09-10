@@ -96,7 +96,7 @@ typedef float(*FloatFunc)(float); // ”казатель на функцию вещественных переменн
 typedef long FixPoint;
 
 // ¬ дробной части фиксированного числа 30 бит
-#define FRACT_PART 27
+#define FRACT_PART 28
 // 2^31 - множитель дл€ получени€ 31 бита мантиссы в long, имитирующем число с фиксированной точкой  
 #define FACTOR (1 << FRACT_PART) 
 #define FLOAT2FIX(x) (FixPoint)(x * FACTOR) // преобразование float в Fixed
